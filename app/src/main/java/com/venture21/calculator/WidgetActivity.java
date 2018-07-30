@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 public class WidgetActivity extends AppCompatActivity implements CompoundButton.OnCheckedChangeListener {
@@ -11,6 +12,8 @@ public class WidgetActivity extends AppCompatActivity implements CompoundButton.
     CheckBox cbApple;
     CheckBox cbBanana;
     CheckBox cbCherry;
+    RadioGroup rg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,27 @@ public class WidgetActivity extends AppCompatActivity implements CompoundButton.
         cbApple.setOnCheckedChangeListener(this);
         cbBanana.setOnCheckedChangeListener(this);
         cbCherry.setOnCheckedChangeListener(this);
+
+        rg = (RadioGroup) findViewById(R.id.radiogroup);
+        rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int button_id) {
+                switch(button_id){
+                    case R.id.rbAnaconda:
+                        Toast.makeText(WidgetActivity.this, "Anaconda 라디오버튼", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.rbBear:
+                        Toast.makeText(WidgetActivity.this, "Bear 라디오버튼", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.rbCat:
+                        Toast.makeText(WidgetActivity.this, "Cat 라디오버튼", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
+            }
+        });
+
+
 
     }
 
