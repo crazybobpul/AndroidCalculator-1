@@ -144,51 +144,55 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
     }
 
     private void Calculator() {
-        int i = 0;
-        String opData[] = new String[20];
+        int inc = 0;
+        String opData[] =new String[15];
+
         String tString = (String) preview.getText();
+        if(debug) {
+
+            System.out.println(tString);
+        }
+
         char arrs[] = tString.toCharArray();
         int strStart=0, strEnd=0;
         int opCount=0;
-        ArrayList<String> list = new ArrayList();
+        ArrayList<String> list = new ArrayList<>();
 
-        for(i=0;i<tString.length();i++) {
-            if ((arrs[i] == '+') | (arrs[i] == '-') | (arrs[i] == '*') | (arrs[i] == '/') | (arrs[i] == '=')) {
-                strEnd = i;
+        for(inc=0;inc<tString.length();inc++) {
+            if( (arrs[inc]=='+') | (arrs[inc]=='-') | (arrs[inc]=='*') | (arrs[inc]=='/') |(arrs[inc]=='=')) {
+                strEnd = inc;
                 opData[opCount] = tString.substring(strStart, strEnd);
                 list.add(opData[opCount]);
                 opCount++;
-                if (arrs[i] == '+')
-                    list.add("+");
-                else if (arrs[i] == '-')
-                    list.add("-");
-                else if (arrs[i] == '*')
-                    list.add("*");
-                else if (arrs[i] == '/')
-                    list.add("/");
-                if (arrs[i] != '=') {
-                    strStart = i + 1;
+                if (arrs[inc] == '+')       list.add("+");
+                else if (arrs[inc] == '-')  list.add("-");
+                else if (arrs[inc] == '*')  list.add("*");
+                else if (arrs[inc] == '/')  list.add("/");
+
+                if (arrs[inc] != '=') {
+                    strStart=inc+1;
                     opCount++;
                 }
             }
         }
 
         boolean opCal = false;
-        double temp1 =0;
-        double temp2 =0;
+        double temp1=0;
+        double temp2=0;
         double sum=0;
 
-        // *또는 /연산 우선
-        for(i=0;i<list.size();){
-            String item = list.get(i);
-            if(item.equals("*")){
-                temp1 = Double.parseDouble(list.get(i-1));
-                temp2 = Double.parseDouble(list.get(i+1));
-                sum = temp1 * temp2;
+        // * 또는 / 연산 우선
+        for(inc=0;inc<list.size(); ) {
+            String item = list.get(inc);
+
+            if(item.equals("*")) {
+                temp1 = Double.parseDouble(list.get(inc-1));
+                temp2 = Double.parseDouble(list.get(inc+1));
+                sum   = temp1 * temp2;
                 opCal = true;
-            } else if(item.equals("/")){
-                temp1 = Double.parseDouble(list.get(i-1));
-                temp2 = Double.parseDouble(list.get(i+1));
+            } else if(item.equals("/")) {
+                temp1 = Double.parseDouble(list.get(inc - 1));
+                temp2 = Double.parseDouble(list.get(inc + 1));
                 sum = temp1 / temp2;
                 opCal = true;
             } else {
@@ -196,26 +200,59 @@ public class CalculatorActivity extends AppCompatActivity implements View.OnClic
             }
 
             if(opCal) {
-                list.set(i, sum+"");
-                list.remove(i+1);
-                list.remove(i-1);
-            }
-            else {
-                i++;
+                list.set(inc, sum+"");
+                list.remove(inc+1);
+                list.remove(inc-1);
+            } else {
+                inc++;
             }
 
-            Boolean DEBUG=true;
-            if(DEBUG){
-                for(Object str : list){
+
+            if(debug) {
+
+                for (Object str : list) {
                     System.out.print(str);
                 }
+                System.out.println("");
+                System.out.println(sum);
+            }
+        }
 
+        // + 또는 - 연산 우선
+        for(inc=0;inc<list.size(); ) {
+            String item = list.get(inc);
+
+            if(item.equals("+")) {
+                temp1 = Double.parseDouble(list.get(inc-1));
+                temp2 = Double.parseDouble(list.get(inc+1));
+                sum   = temp1 + temp2;
+                opCal = true;
+            } else if(item.equals("-")) {
+                temp1 = Double.parseDouble(list.get(inc - 1));
+                temp2 = Double.parseDouble(list.get(inc + 1));
+                sum = temp1 - temp2;
+                opCal = true;
+            } else {
+                opCal = false;
+            }
+
+            if(opCal) {
+                list.set(inc, sum+"");
+                list.remove(inc+1);
+                list.remove(inc-1);
+            } else {
+                inc++;
+            }
+
+            if(debug) {
+
+                for (Object str : list) {
+                    System.out.print(str);
+                }
                 System.out.println("");
                 System.out.println(sum);
             }
         }
         result.setText(sum+"");
-
-
     }
 }
